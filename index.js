@@ -40,14 +40,38 @@ app.get("/movies/create", (req, res) => {
   res.send({ status: 200, message: `hello, ${id}` });
 });
 
-app.get("/movies/read", (req, res) => {
-  res.send({status:200, data:movies });
+app.get("/movies/read/by-date", (req, res) => {
+    const aflem = movies.sort((a,b)=>a.year-b.year);
+  res.send({status:200, data:aflem});
 });
 
 app.get("/movies/update", (req, res) => {
   const id = req.params.id;
   res.send({ status: 200, message: `hello, ${id}` });
 });
+
+app.get("/movies/read/by-rating", (req, res) => {
+    const rate = movies.sort((a,b)=>a.rating-b.rating);
+    res.send({status:200, data:rate});
+  });
+
+  app.get("/movies/read/by-title", (req, res) => {
+    const moviesOrderedByTitle = movies.sort((a, b) => {
+      const Alpha = a.title.toLowerCase();
+      const Beta = b.title.toLowerCase();
+      if (Alpha < Beta) {
+        return -1;
+      } else if (Alpha > Beta) {
+        return 1;
+      } else {
+        return 0;
+      }
+    });
+    res.send({
+      status: 200,
+      data: moviesOrderedByTitle,
+    });
+  });
 
 app.get("/movies/delete", (req, res) => {
   const id = req.params.id;
