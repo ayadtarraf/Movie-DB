@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express();
-const port = 3000;
+const port = 4000;
 
 app.get("/", (req, res) => {
   res.send("OK");
@@ -133,6 +133,54 @@ app.get("/movies/delete/:id", (req, res) => {
     });
   } else {
     movies.splice(delet, 1);
+    res.send(movies);
+  }
+});
+
+app.get("/movies/update/:id", (req, res) => {
+  const update = req.params.id;
+  const tit = req.query.title;
+  if (isNaN(update)) {
+    res.status(404);
+    res.send({
+      status: 404,
+      error: true,
+      message: `please enter a valid id number`,
+    });
+  } else if (update < 0 || update > movies.length - 1) {
+    res.status(404);
+    res.send({
+      status: 404,
+      error: true,
+      message: `the movie ${update} does not exist`,
+    });
+  } else {
+    if (tit !== undefined && tit !== "") {
+      movies[update] = {
+        ...movies[update],
+        title: tit,
+      };
+    }
+    if (
+      !isNaN(req.query.year) &&
+      req.query.year !== "" &&
+      req.query.year.length == 4
+    ) {
+      movies[update] = {
+        ...movies[update],
+        year: parseInt(req.query.year),
+      };
+    }
+    if (
+      !isNaN(req.query.rating) &&
+      req.query.rating !== undefined &&
+      req.query.rating !== ""
+    ) {
+      movies[update] = {
+        ...movies[update],
+        rating: parseFloat(req.query.rating),
+      };
+    }
     res.send(movies);
   }
 });
