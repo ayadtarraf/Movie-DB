@@ -90,6 +90,35 @@ app.get("/movies/delete", (req, res) => {
   res.send({ status: 200, message: `hello, ${id}` });
 });
 
+app.get('/movies/add', (req, res) => {
+    const { title, year, rating } = req.query;
+    if (!title || !year) {
+        return res.json({
+          status: 403,
+          error: true,
+          message: 'You cannot create a movie without providing a title and a year',
+        });
+      }
+
+      if (year.length !== 4 || isNaN(year)) {
+        return res.json({
+          status: 403,
+          error: true,
+          message: 'Year must be a 4-digit number',
+        });
+      }
+      if (!rating) {
+        rating = 4;
+      }
+      const movie = {
+        title,
+        year,
+        rating,
+      };
+      movies.push(movie);
+      res.json(movies);
+});
+
 const movies = [
   { title: "Jaws", year: 1975, rating: 8 },
   { title: "Avatar", year: 2009, rating: 7.8 },
