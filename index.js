@@ -81,12 +81,12 @@ app.get("/movies/read/id/:id", (req, res) => {
     });
   }
 });
-app.get("/movies/delete", (req, res) => {
-  const id = req.params.id;
-  res.send({ status: 200, message: `hello, ${id}` });
-});
+// app.get("/movies/delete", (req, res) => {
+//   const id = req.params.id;
+//   res.send({ status: 200, message: `hello, ${id}` });
+// });
 
-app.get("/movies/add", (req, res) => {
+app.post("/movies/add", (req, res) => {
   const { title, year, rating } = req.query;
   if (!title || !year) {
     return res.json({
@@ -115,7 +115,7 @@ app.get("/movies/add", (req, res) => {
   res.json(movies);
 });
 
-app.get("/movies/delete/:id", (req, res) => {
+app.delete("/movies/delete/:id", (req, res) => {
   const delet = req.params.id;
   if (isNaN(delet)) {
     res.status(404);
